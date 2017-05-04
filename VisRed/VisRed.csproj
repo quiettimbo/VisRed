@@ -63,6 +63,7 @@
     <Compile Include="ObservableCollection.cs" />
     <Compile Include="RedisModel.cs" />
     <Compile Include="RedisServer.cs" />
+    <Compile Include="RedisValue.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

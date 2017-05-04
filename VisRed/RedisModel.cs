@@ -26,9 +26,9 @@ namespace VisRed
             }
         }
 
-        public ObservableDictionary<string, RedisValue> _entries;
+        public ObservableDictionary<string, RedisVal> _entries;
 
-        public ObservableDictionary<string, RedisValue> Entries
+        public ObservableDictionary<string, RedisVal> Entries
         {
             get
             {
@@ -44,7 +44,7 @@ namespace VisRed
         public RedisModel()
         {
             Servers = new ObservableCollection<RedisServer>();
-            Entries = new ObservableDictionary<string, RedisValue>();
+            Entries = new ObservableDictionary<string, RedisVal>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

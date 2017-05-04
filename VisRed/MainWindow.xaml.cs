@@ -29,6 +29,7 @@ namespace VisRed
             InitializeComponent();
             Model = new RedisModel();
             Model.Servers.Add(new RedisServer() { Url = "whcinnsamres01q.corp.web" });
+            Model.Servers.Add(new RedisServer() { Url = "whcinnsamres01s.corp.web" });
             comboBox.ItemsSource = Model.Servers;
             listView.ItemsSource = Model.Entries;
 
@@ -41,7 +42,8 @@ namespace VisRed
 
             var rs = RedisService.GetServer(RedisService.GetEndPoints().FirstOrDefault());
             Model.Entries.Clear();
-            Model.Entries.AddRange(rs.Keys().ToDictionary(k => k.ToString(), k => RedisValue.EmptyString));
+            var db = RedisService.GetDatabase();
+            Model.Entries.AddRange(rs.Keys().ToDictionary(k => k.ToString(), k => RedisServer.RedisFactory(db, k)));
         }
     }
 }
