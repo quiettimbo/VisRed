@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:VisRed"
         xmlns:Properties="clr-namespace:VisRed.Properties" x:Class="VisRed.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="VisRed" Height="350" Width="525">
     <Grid x:Name="RootGrid">
         <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="248" SelectionChanged="comboBox_SelectionChanged">
             <ComboBox.ItemTemplate>
@@ -18,10 +18,48 @@
         <ListView x:Name="listView" Margin="10,37,10,10.5">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Header="Key" DisplayMemberBinding="{Binding Key}">
+                    </GridViewColumn>
+                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Value.RedisType}">
+                    </GridViewColumn>
+                    <GridViewColumn >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding Value}">
+                                    <ContentControl.Resources>
+                                        <DataTemplate DataType="{x:Type local:RedisStringValue}">
+                                            <TextBlock Text="{Binding Value}" Foreground="Orange" Cursor="Hand" />
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type local:RedisHashValue}">
+                                            <ListBox ItemsSource="{Binding Values}">
+                                                <!--<TextBlock Text="{Binding}"/>-->
+                                            </ListBox>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type local:RedisListValue}">
+                                            <ListBox ItemsSource="{Binding Values}">
+                                                <!--<TextBlock Text="{Binding}"/>-->
+                                            </ListBox>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type local:RedisSetValue}">
+                                            <ListBox ItemsSource="{Binding Values}">
+                                                <!--<TextBlock Text="{Binding}"/>-->
+                                            </ListBox>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type local:RedisSortedSetValue}">
+                                            <ListBox ItemsSource="{Binding Values}">
+                                                <!--<TextBlock Text="{Binding}"/>-->
+                                            </ListBox>
+                                        </DataTemplate>
+                                    </ContentControl.Resources>
+                                </ContentControl>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-
+        <Button x:Name="button" HorizontalAlignment="Left" Margin="263,10,0,0" VerticalAlignment="Top" Width="22" Height="22" Click="button_Click">
+            <Image Source="Images/Refresh.bmp" />
+        </Button>
     </Grid>
 </Window>

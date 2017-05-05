@@ -38,12 +38,23 @@ namespace VisRed
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            RedisService = ConnectionMultiplexer.Connect(e.AddedItems.Cast<RedisServer>().FirstOrDefault().Url);
+            Refresh(e.AddedItems.Cast<RedisServer>().FirstOrDefault().Url);
+        }
+
+        private void Refresh(string Url)
+        {
+            RedisService = ConnectionMultiplexer.Connect(Url);
 
             var rs = RedisService.GetServer(RedisService.GetEndPoints().FirstOrDefault());
             Model.Entries.Clear();
             var db = RedisService.GetDatabase();
             Model.Entries.AddRange(rs.Keys().ToDictionary(k => k.ToString(), k => RedisServer.RedisFactory(db, k)));
+
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh(comboBox.Items.Cast<RedisServer>().FirstOrDefault().Url);
         }
     }
 }

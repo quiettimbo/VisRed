@@ -31,6 +31,74 @@ namespace VisRed
         }
     }
 
+    public class RedisHashValue : RedisVal
+    {
+        protected HashEntry[] _values;
+        public RedisHashValue(HashEntry[] value) : base(RedisValue.Null, RedisType.Hash)
+        {
+            _values = value;
+        }
+
+        public HashEntry[] Values
+        {
+            get
+            {
+                return _values;
+            }
+        }
+    }
+
+    public class RedisListValue : RedisVal
+    {
+        protected RedisValue[] _values;
+        public RedisListValue(RedisValue[] value) : base(RedisValue.Null, RedisType.List)
+        {
+            _values = value;
+        }
+
+        public RedisValue[] Values
+        {
+            get
+            {
+                return _values;
+            }
+        }
+    }
+
+    public class RedisSetValue : RedisVal
+    {
+        protected RedisValue[] _values;
+        public RedisSetValue(RedisValue[] value) : base(RedisValue.Null, RedisType.Set)
+        {
+            _values = value;
+        }
+
+        public RedisValue[] Values
+        {
+            get
+            {
+                return _values;
+            }
+        }
+    }
+
+    public class RedisSortedSetValue : RedisVal
+    {
+        protected RedisValue[] _values;
+        public RedisSortedSetValue(RedisValue[] value) : base(RedisValue.Null, RedisType.SortedSet)
+        {
+            _values = value;
+        }
+
+        public RedisValue[] Values
+        {
+            get
+            {
+                return _values;
+            }
+        }
+    }
+
     public class RedisNullValue : RedisVal
     {
         public RedisNullValue():base(RedisValue.Null, RedisType.None)
