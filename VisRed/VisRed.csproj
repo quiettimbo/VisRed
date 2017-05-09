@@ -64,6 +64,7 @@
     <Compile Include="RedisModel.cs" />
     <Compile Include="RedisServer.cs" />
     <Compile Include="RedisValue.cs" />
+    <Compile Include="Utils\TruncatingValueConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

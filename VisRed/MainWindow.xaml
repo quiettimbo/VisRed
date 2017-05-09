@@ -4,9 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VisRed"
-        xmlns:Properties="clr-namespace:VisRed.Properties" x:Class="VisRed.MainWindow"
+        xmlns:Properties="clr-namespace:VisRed.Properties"
+        xmlns:utils="clr-namespace:VisRed.Utils"
+        x:Class="VisRed.MainWindow"
         mc:Ignorable="d"
         Title="VisRed" Height="350" Width="525">
+    <Window.Resources>
+        <DataTemplate x:Key="HashValueTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+                <TextBlock FontWeight="Bold">:</TextBlock>
+                <TextBlock Text="{Binding Value}" TextTrimming="WordEllipsis" Height="12pt"></TextBlock>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid x:Name="RootGrid">
         <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="248" SelectionChanged="comboBox_SelectionChanged">
             <ComboBox.ItemTemplate>
@@ -22,7 +33,7 @@
                     </GridViewColumn>
                     <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Value.RedisType}">
                     </GridViewColumn>
-                    <GridViewColumn >
+                    <GridViewColumn Header="Value" Width="auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding Value}">
@@ -31,22 +42,21 @@
                                             <TextBlock Text="{Binding Value}" Foreground="Orange" Cursor="Hand" />
                                         </DataTemplate>
                                         <DataTemplate DataType="{x:Type local:RedisHashValue}">
-                                            <ListBox ItemsSource="{Binding Values}">
-                                                <!--<TextBlock Text="{Binding}"/>-->
+                                            <ListBox ItemsSource="{Binding Values}" ItemTemplate="{StaticResource HashValueTemplate}">
                                             </ListBox>
                                         </DataTemplate>
                                         <DataTemplate DataType="{x:Type local:RedisListValue}">
-                                            <ListBox ItemsSource="{Binding Values}">
+                                            <ListBox ItemsSource="{Binding Values, Converter={utils:TruncatingValueConverter}}">
                                                 <!--<TextBlock Text="{Binding}"/>-->
                                             </ListBox>
                                         </DataTemplate>
                                         <DataTemplate DataType="{x:Type local:RedisSetValue}">
-                                            <ListBox ItemsSource="{Binding Values}">
+                                            <ListBox ItemsSource="{Binding Values, Converter={utils:TruncatingValueConverter}}">
                                                 <!--<TextBlock Text="{Binding}"/>-->
                                             </ListBox>
                                         </DataTemplate>
                                         <DataTemplate DataType="{x:Type local:RedisSortedSetValue}">
-                                            <ListBox ItemsSource="{Binding Values}">
+                                            <ListBox ItemsSource="{Binding Values, Converter={utils:TruncatingValueConverter}}">
                                                 <!--<TextBlock Text="{Binding}"/>-->
                                             </ListBox>
                                         </DataTemplate>
