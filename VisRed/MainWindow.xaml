@@ -33,7 +33,7 @@
                     </GridViewColumn>
                     <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Value.RedisType}">
                     </GridViewColumn>
-                    <GridViewColumn Header="Value" Width="auto">
+                    <GridViewColumn Header="Value" Width="Auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding Value}">
@@ -71,5 +71,6 @@
         <Button x:Name="button" HorizontalAlignment="Left" Margin="263,10,0,0" VerticalAlignment="Top" Width="22" Height="22" Click="button_Click">
             <Image Source="Images/Refresh.bmp" />
         </Button>
+        <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="23" Margin="290,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" AcceptsReturn="False" KeyUp="searchBox_KeyUp"/>
     </Grid>
 </Window>

@@ -41,20 +41,49 @@ namespace VisRed
             Refresh(e.AddedItems.Cast<RedisServer>().FirstOrDefault().Url);
         }
 
-        private void Refresh(string Url)
+        private void Refresh(string url = null)
         {
-            RedisService = ConnectionMultiplexer.Connect(Url);
+            if (RedisService == null || 
+                (url != null && !RedisService.Configuration.StartsWith(url)))
+            {
+                if (url == null)
+                {
+                    var selected = comboBox.SelectedItem as RedisServer;
+                    if (selected == null)
+                    {
+                        return;
+                    }
+                    url = selected.Url;
+                }
+                RedisService = ConnectionMultiplexer.Connect(url);
+            }
 
             var rs = RedisService.GetServer(RedisService.GetEndPoints().FirstOrDefault());
             Model.Entries.Clear();
             var db = RedisService.GetDatabase();
-            Model.Entries.AddRange(rs.Keys().ToDictionary(k => k.ToString(), k => RedisServer.RedisFactory(db, k)));
-
+            Model.Entries.AddRange(rs.Keys(db.Database, searchBox.Text).ToDictionary(k => k.ToString(), k => RedisServer.RedisFactory(db, k)));
+            // Really want to do this async and just get enough to fill the page
+            //IEnumerable<RedisKey> cursor = rs.Keys(db.Database, searchBox.Text, 10);
+            //do
+            //{
+            //    Model.Entries.AddRange(cursor.ToDictionary(k => k.ToString(), k => RedisServer.RedisFactory(db, k)));
+            //    var sc = cursor as IScanningCursor;
+            //    if (sc?.Cursor == 0) break;
+            //    cursor = rs.Keys(db.Database, searchBox.Text, 10, sc.Cursor);
+            //} while (true);
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            Refresh(comboBox.Items.Cast<RedisServer>().FirstOrDefault().Url);
+            Refresh();
+        }
+
+        private void searchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Refresh();
+            }
         }
     }
 }
