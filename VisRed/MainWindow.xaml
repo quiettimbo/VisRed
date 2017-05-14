@@ -22,7 +22,7 @@
         <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="248" SelectionChanged="comboBox_SelectionChanged">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Url}" />
+                    <TextBlock Text="{Binding Name}" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
@@ -69,8 +69,11 @@
             </ListView.View>
         </ListView>
         <Button x:Name="button" HorizontalAlignment="Left" Margin="263,10,0,0" VerticalAlignment="Top" Width="22" Height="22" Click="button_Click">
-            <Image Source="Images/Refresh.bmp" />
+            <Image Source="Images/Refresh.bmp" RenderTransformOrigin="9.237,0.34" />
         </Button>
         <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="23" Margin="290,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" AcceptsReturn="False" KeyUp="searchBox_KeyUp"/>
+        <Button x:Name="testgeneratebutton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Height="22" Click="testgeneratebutton_Click" RenderTransformOrigin="2.182,0.407" Margin="415,11,0,0">
+            <Image Source="Images/Test.bmp" RenderTransformOrigin="9.237,0.34" />
+        </Button>
     </Grid>
 </Window>

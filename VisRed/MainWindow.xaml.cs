@@ -1,6 +1,7 @@
 ﻿using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,8 +29,12 @@ namespace VisRed
         {
             InitializeComponent();
             Model = new RedisModel();
-            Model.Servers.Add(new RedisServer() { Url = "whcinnsamres01q.corp.web" });
-            Model.Servers.Add(new RedisServer() { Url = "whcinnsamres01s.corp.web" });
+            foreach (var item in ConfigurationManager.ConnectionStrings
+                .Cast<ConnectionStringSettings>()
+                .Where(cs => cs.ProviderName.Equals("Redis",StringComparison.CurrentCultureIgnoreCase )))
+            {
+                Model.Servers.Add(new RedisServer() { Url = item.ConnectionString, Name = item.Name });
+            }
             comboBox.ItemsSource = Model.Servers;
             listView.ItemsSource = Model.Entries;
 
@@ -83,6 +88,31 @@ namespace VisRed
             if (e.Key == Key.Enter)
             {
                 Refresh();
+            }
+        }
+
+        private void testgeneratebutton_Click(object sender, RoutedEventArgs e)
+        {
+            // want a two state so that we can delete 
+            if (RedisService != null && RedisService.IsConnected)
+            {
+                var db = RedisService.GetDatabase();
+
+                db.StringSet("Visred.Test.Key" ,"simple value");
+                db.HashSet("Visred.Test.Hash", new HashEntry[] { new HashEntry( "hash1", "value1"),
+                    new HashEntry("hash2", "value2"),
+                    new HashEntry("hash3", "value3")});
+                db.SetAdd("Visred.Test.Set", new RedisValue[]
+                {
+                    "setvalue1", "setvalue2", "setvalue3"
+                });
+                db.SortedSetAdd("Visred.Test.SortedSet", new SortedSetEntry[]
+                {
+                    new SortedSetEntry("setvalue1", 1),
+                    new SortedSetEntry("setvalue2", 3),
+                    new SortedSetEntry("setvalue3", 2)
+                });
+                db.ListRightPush("Visred.Test.List", new RedisValue[] { "Value1", "Value2" });
             }
         }
     }
