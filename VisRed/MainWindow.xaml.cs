@@ -46,7 +46,7 @@ namespace VisRed
             Refresh(e.AddedItems.Cast<RedisServer>().FirstOrDefault().Url);
         }
 
-        private void Refresh(string url = null)
+        private async Task Refresh(string url = null)
         {
             if (RedisService == null || 
                 (url != null && !RedisService.Configuration.StartsWith(url)))
@@ -66,9 +66,13 @@ namespace VisRed
             var rs = RedisService.GetServer(RedisService.GetEndPoints().FirstOrDefault());
             Model.Entries.Clear();
             var db = RedisService.GetDatabase();
-            Model.Entries.AddRange(rs.Keys(db.Database, searchBox.Text).ToDictionary(k => k.ToString(), k => RedisServer.RedisFactory(db, k)));
+            var seq = rs.Keys(db.Database, searchBox.Text);
+            foreach (var key in seq)
+            {
+                Model.Entries.Add(key, RedisVal.ValueFactory(db, key));
+            }
             // Really want to do this async and just get enough to fill the page
-            //IEnumerable<RedisKey> cursor = rs.Keys(db.Database, searchBox.Text, 10);
+            //IScanningCursor cursor = rs.Keys(db.Database, searchBox.Text, 10) as IScanningCursor;
             //do
             //{
             //    Model.Entries.AddRange(cursor.ToDictionary(k => k.ToString(), k => RedisServer.RedisFactory(db, k)));
@@ -78,41 +82,49 @@ namespace VisRed
             //} while (true);
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private async void button_Click(object sender, RoutedEventArgs e)
         {
-            Refresh();
+            await Refresh();
         }
 
-        private void searchBox_KeyUp(object sender, KeyEventArgs e)
+        private async void searchBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                Refresh();
+                await Refresh();
             }
         }
 
-        private void testgeneratebutton_Click(object sender, RoutedEventArgs e)
+        private async void testgeneratebutton_Click(object sender, RoutedEventArgs e)
         {
             // want a two state so that we can delete 
             if (RedisService != null && RedisService.IsConnected)
             {
                 var db = RedisService.GetDatabase();
+                Task[] tarr = new Task[150];
 
-                db.StringSet("Visred.Test.Key" ,"simple value");
+                tarr[1] = db.StringSetAsync("Visred.Test.Key" ,"simple value");
                 db.HashSet("Visred.Test.Hash", new HashEntry[] { new HashEntry( "hash1", "value1"),
                     new HashEntry("hash2", "value2"),
                     new HashEntry("hash3", "value3")});
-                db.SetAdd("Visred.Test.Set", new RedisValue[]
+                tarr[2] = db.SetAddAsync("Visred.Test.Set", new RedisValue[]
                 {
                     "setvalue1", "setvalue2", "setvalue3"
                 });
-                db.SortedSetAdd("Visred.Test.SortedSet", new SortedSetEntry[]
+                tarr[3] = db.SortedSetAddAsync("Visred.Test.SortedSet", new SortedSetEntry[]
                 {
                     new SortedSetEntry("setvalue1", 1),
                     new SortedSetEntry("setvalue2", 3),
                     new SortedSetEntry("setvalue3", 2)
                 });
-                db.ListRightPush("Visred.Test.List", new RedisValue[] { "Value1", "Value2" });
+                tarr[0] = db.ListRightPushAsync("Visred.Test.List", new RedisValue[] { "Value1", "Value2" });
+
+                for (int ii = 4; ii < tarr.Length; ii++)
+                {
+                    tarr[ii] = db.StringSetAsync($"Visred.Test.{ii}", $"Simple value {ii}");
+                }
+
+                await Task.WhenAll( tarr);
             }
         }
     }
