@@ -61,11 +61,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Info\Info.xaml.cs">
+      <DependentUpon>Info.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IRedisContextProvider.cs" />
     <Compile Include="ObservableCollection.cs" />
     <Compile Include="RedisModel.cs" />
     <Compile Include="RedisServer.cs" />
     <Compile Include="RedisValue.cs" />
     <Compile Include="Utils\TruncatingValueConverter.cs" />
+    <Page Include="Info\Info.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,6 +120,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Test.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\props.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

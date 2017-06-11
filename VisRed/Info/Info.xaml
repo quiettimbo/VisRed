@@ -1,0 +1,22 @@
+﻿<Window x:Class="VisRed.Info.Info"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VisRed.Info"
+        mc:Ignorable="d"
+        Title="info" Height="300" Width="300">
+    <Grid>
+        <TabControl x:Name="tabControl" Margin="10,10,10,10.5">
+            <TabItem Header="Stats">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="dataGrid"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Server">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

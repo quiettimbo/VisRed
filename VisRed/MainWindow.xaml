@@ -86,7 +86,10 @@
         </Button>
         <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="23" Margin="290,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" AcceptsReturn="False" KeyUp="searchBox_KeyUp"/>
         <Button x:Name="testgeneratebutton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Height="22" Click="testgeneratebutton_Click" RenderTransformOrigin="2.182,0.407" Margin="415,11,0,0">
-            <Image Source="Images/Test.bmp" RenderTransformOrigin="9.237,0.34" />
+            <Image Source="Images/Test.bmp" />
+        </Button>
+        <Button x:Name="infobutton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Height="22" Click="infobutton_Click" RenderTransformOrigin="2.182,0.407" Margin="442,10,0,0">
+            <Image Source="Images/props.bmp"  />
         </Button>
     </Grid>
 </Window>

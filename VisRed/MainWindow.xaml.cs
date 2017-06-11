@@ -20,7 +20,7 @@ namespace VisRed
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IRedisContextProvider
     {
         public RedisModel Model { get; set; }
         public ConnectionMultiplexer RedisService { get; set; }
@@ -126,6 +126,13 @@ namespace VisRed
 
                 await Task.WhenAll( tarr);
             }
+        }
+
+        private void infobutton_Click(object sender, RoutedEventArgs e)
+        {
+            var props = new Info.Info();
+            props.Context = this;
+            props.ShowDialog();
         }
     }
 }
