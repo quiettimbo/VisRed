@@ -41,9 +41,9 @@ namespace VisRed
             
         }
 
-        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Refresh(e.AddedItems.Cast<RedisServer>().FirstOrDefault().Url);
+            await Refresh(e.AddedItems.Cast<RedisServer>().FirstOrDefault().Url);
         }
 
         private async Task Refresh(string url = null)
@@ -133,6 +133,13 @@ namespace VisRed
             var props = new Info.Info();
             props.Context = this;
             props.ShowDialog();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            if (RedisService != null)
+                RedisService.Dispose();
         }
     }
 }

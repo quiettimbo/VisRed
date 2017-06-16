@@ -24,14 +24,24 @@ namespace VisRed.Info
         public Info()
         {
             InitializeComponent();
+            Activated += Info_Initialized;
+
+        }
+
+        private void Info_Initialized(object sender, EventArgs e)
+        {
+            if (infoTabs.ItemsSource == null)
+                PopulateModel();
         }
 
         private void PopulateModel()
         {
             if (Context == null || Context.RedisService == null) return;
 
-            var info = Context.RedisService.GetCounters();
-            dataGrid.DataContext = info;
+            var rs = Context.RedisService.GetServer(Context.RedisService.GetEndPoints().FirstOrDefault());
+
+            var info = rs.Info();
+            infoTabs.ItemsSource = info; //.SelectMany(gp=> gp);
         }
     }
 }
