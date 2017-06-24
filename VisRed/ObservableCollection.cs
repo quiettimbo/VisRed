@@ -6,14 +6,14 @@ using System.Collections.Specialized;
 
 namespace System.Collections.ObjectModel
 {
-    public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INotifyCollectionChanged, INotifyPropertyChanged
+    public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INotifyCollectionChanged, INotifyPropertyChanged 
     {
         private const string CountString = "Count";
         private const string IndexerName = "Item[]";
         private const string KeysName = "Keys";
         private const string ValuesName = "Values";
 
-        private IDictionary<TKey, TValue> _Dictionary;
+        private readonly IDictionary<TKey, TValue> _Dictionary;
         protected IDictionary<TKey, TValue> Dictionary
         {
             get { return _Dictionary; }
@@ -23,6 +23,10 @@ namespace System.Collections.ObjectModel
         public ObservableDictionary()
         {
             _Dictionary = new Dictionary<TKey, TValue>();
+        }
+        protected ObservableDictionary(Type dictType, IDictionary<TKey,TValue> internalDictionary)
+        {
+            _Dictionary = internalDictionary;
         }
         public ObservableDictionary(IDictionary<TKey, TValue> dictionary)
         {
@@ -180,15 +184,10 @@ namespace System.Collections.ObjectModel
 
             if (items.Count > 0)
             {
-                if (Dictionary.Count > 0)
-                {
-                    if (items.Keys.Any((k) => Dictionary.ContainsKey(k)))
-                        throw new ArgumentException("An item with the same key has already been added.");
-                    else
-                        foreach (var item in items) Dictionary.Add(item);
-                }
+                if (items.Keys.Any((k) => Dictionary.ContainsKey(k)))
+                    throw new ArgumentException("An item with the same key has already been added.");
                 else
-                    _Dictionary = new Dictionary<TKey, TValue>(items);
+                    foreach (var item in items) Dictionary.Add(item);
 
                 OnCollectionChanged(NotifyCollectionChangedAction.Add, items.ToArray());
             }
@@ -234,13 +233,13 @@ namespace System.Collections.ObjectModel
             if (CollectionChanged != null) CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
-        private void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> changedItem)
+        protected void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> changedItem)
         {
             OnPropertyChanged();
             if (CollectionChanged != null) CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, changedItem));
         }
 
-        private void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> newItem, KeyValuePair<TKey, TValue> oldItem)
+        protected void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> newItem, KeyValuePair<TKey, TValue> oldItem)
         {
             OnPropertyChanged();
             if (CollectionChanged != null) CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, newItem, oldItem));

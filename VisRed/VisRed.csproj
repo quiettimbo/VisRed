@@ -69,6 +69,8 @@
     <Compile Include="RedisModel.cs" />
     <Compile Include="RedisServer.cs" />
     <Compile Include="RedisValue.cs" />
+    <Compile Include="Utils\LazyDictionary.cs" />
+    <Compile Include="Utils\ObservableLazyDictionary.cs" />
     <Compile Include="Utils\TruncatingValueConverter.cs" />
     <Page Include="Info\Info.xaml">
       <SubType>Designer</SubType>

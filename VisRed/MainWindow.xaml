@@ -39,7 +39,7 @@
             <!--This is the hidden helper Field which is used to bind to, using the "Fill" column of the helper grid-->
             <Grid Grid.Column="2" x:Name="helperField"/>
         </Grid>
-        <ListView x:Name="listView" Margin="10,37,10,10.5">
+        <ListView x:Name="listView" Margin="10,37,10,10.5" ScrollViewer.ScrollChanged="keysview_ScrollChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Key" DisplayMemberBinding="{Binding Key}" x:Name="KeyCol">

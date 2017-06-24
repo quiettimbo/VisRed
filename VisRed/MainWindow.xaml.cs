@@ -25,6 +25,8 @@ namespace VisRed
         public RedisModel Model { get; set; }
         public ConnectionMultiplexer RedisService { get; set; }
 
+        protected IEnumerable<RedisKey> keysEnum = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -66,8 +68,8 @@ namespace VisRed
             var rs = RedisService.GetServer(RedisService.GetEndPoints().FirstOrDefault());
             Model.Entries.Clear();
             var db = RedisService.GetDatabase();
-            var seq = rs.Keys(db.Database, searchBox.Text);
-            foreach (var key in seq)
+            keysEnum = rs.Keys(db.Database, searchBox.Text);
+            foreach (var key in keysEnum)
             {
                 Model.Entries.Add(key, RedisVal.ValueFactory(db, key));
             }
@@ -140,6 +142,11 @@ namespace VisRed
             base.OnClosed(e);
             if (RedisService != null)
                 RedisService.Dispose();
+        }
+
+        private void keysview_ScrollChanged(object sender, RoutedEventArgs e)
+        {
+            //if (keysEnum != null)
         }
     }
 }
